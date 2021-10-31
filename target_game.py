@@ -11,14 +11,23 @@ Each word must contain a central letter.
 """
 
 from typing import List
+import random
+import string
 
 
 def generate_grid() -> List[List[str]]:
-    """
-    Generates list of lists of letters - i.e. grid for the game.
+    """ Generates list of lists of letters - i.e. grid for the game.
     e.g. [['I', 'G', 'E'], ['P', 'I', 'S'], ['W', 'M', 'G']]
+
+    :return: Grid for the game
+    :rtype: List[List[str]]
     """
-    pass
+
+    alphabet = list(string.ascii_uppercase)
+    random.shuffle(alphabet)
+    game_grid = [alphabet[number:number+3] for number in range(0, 9, 3)]
+
+    return game_grid
 
 
 def get_words(f: str,
@@ -55,3 +64,7 @@ def results():
     of the game results
     """
     pass
+
+
+if __name__ == '__main__':
+    print(generate_grid())
