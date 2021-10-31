@@ -30,20 +30,43 @@ def generate_grid() -> List[List[str]]:
     return game_grid
 
 
-def get_words(f: str,
+def get_words(filename: str,
               letters: List[str]) -> List[str]:
+    """ Reads the file f.
+    Checks the words with rules and returns a list of words.
+
+    :param filename: All words filename
+    :type filename: str
+    :param letters: Letters to check
+    :type letters: List[str]
+    :return: A list of words that can be found in list of letters
+    :rtype: List[str]
     """
-    Reads the file f. Checks the words with rules and returns a list of words.
-    """
-    pass
+    with open(filename) as file:
+        all_words = [line.rstrip() for line in file.readlines()
+                     if (len(line.rstrip()) >= 4) and (letters[4] in line)]
+
+    output_words = []
+    for word_from_dict in all_words:
+        word_from_dict_list = list(word_from_dict)
+        for letter in letters:
+            if letter in word_from_dict_list:
+                word_from_dict_list.remove(letter)
+        if not word_from_dict_list:
+            output_words.append(word_from_dict)
+
+    return output_words
 
 
 def get_user_words() -> List[str]:
-    """
-    Gets words from user input and returns a list with these words.
+    """ Gets words from user input and returns a list with these words.
     Usage: enter a word or press ctrl+d to finish.
+
+    :return: list with words
+    :rtype: List[str]
     """
-    pass
+    words_input = input("Enter the words (lowercase) separated by space: ")
+    return list(set(words_input.split()))
 
 
 def get_pure_user_words(user_words: List[str],
@@ -68,3 +91,5 @@ def results():
 
 if __name__ == '__main__':
     print(generate_grid())
+    # print(get_user_words())
+    print(get_words('en', ['h', 'e', 'l',  'o', 'l', 'b']))
