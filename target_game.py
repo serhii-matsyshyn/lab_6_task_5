@@ -23,7 +23,7 @@ def generate_grid() -> List[List[str]]:
     :rtype: List[List[str]]
     """
 
-    alphabet = list(string.ascii_uppercase)
+    alphabet = list(string.ascii_uppercase)*3
     random.shuffle(alphabet)
     game_grid = [alphabet[number:number+3] for number in range(0, 9, 3)]
 
@@ -103,10 +103,22 @@ def get_pure_user_words(user_words: List[str],
     output_words = []
     words_in_string = get_words_list(letters, words_from_dict)
     for user_word in user_words:
-        if user_word not in words_in_string:
+        if (len(user_word) >= 4) and (letters[4] in user_word) and (user_word not in words_in_string):
             output_words.append(user_word)
 
     return output_words
+
+
+def print_both(line: str, file):
+    """ Prints result to console and to file
+
+    :param line: Line to print
+    :type line: Str
+    :param file: File to write to
+    :type file: file
+    """
+    print(line)
+    print(line, file=file)
 
 
 def results():
@@ -114,10 +126,30 @@ def results():
     Displays and records the result.txt file
     of the game results
     """
-    pass
+    letters = generate_grid()
+    print(letters[0], letters[1], letters[2], sep='\n')
+
+    letters_list = letters[0] + letters[1] + letters[2]
+    correct_words = get_words("en", letters_list)
+
+    words_input = get_user_words()
+
+    with open("result.txt", 'w') as file:
+        print_both("Correct words you have found: ", file)
+        for word_input in words_input:
+            if word_input in correct_words:
+                print_both(word_input, file)
+
+        print_both("Incorrect words you have found: ", file)
+        for word in get_pure_user_words(words_input,
+                                        letters_list,
+                                        correct_words):
+            print_both(word, file)
+
+        print_both("More words that can be found: ", file)
+        for word in set(correct_words)-set(words_input):
+            print_both(word, file)
 
 
 if __name__ == '__main__':
-    print(generate_grid())
-    # print(get_user_words())
-    print(get_words('en', ['h', 'e', 'l',  'o', 'l', 'b']))
+    results()
