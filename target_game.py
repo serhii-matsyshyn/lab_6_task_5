@@ -23,9 +23,9 @@ def generate_grid() -> List[List[str]]:
     :rtype: List[List[str]]
     """
 
-    alphabet = list(string.ascii_uppercase)*3
+    alphabet = list(string.ascii_uppercase) * 3
     random.shuffle(alphabet)
-    game_grid = [alphabet[number:number+3] for number in range(0, 9, 3)]
+    game_grid = [alphabet[number:number + 3] for number in range(0, 9, 3)]
 
     return game_grid
 
@@ -103,7 +103,9 @@ def get_pure_user_words(user_words: List[str],
     output_words = []
     words_in_string = get_words_list(letters, words_from_dict)
     for user_word in user_words:
-        if (len(user_word) >= 4) and (letters[4] in user_word) and (user_word not in words_in_string):
+        if ((len(user_word) >= 4) and
+                (letters[4] in user_word) and
+                (user_word not in words_in_string)):
             output_words.append(user_word)
 
     return output_words
@@ -147,7 +149,7 @@ def results():
             print_both(word, file)
 
         print_both("More words that can be found: ", file)
-        for word in set(correct_words)-set(words_input):
+        for word in set(correct_words) - set(words_input):
             print_both(word, file)
 
 
