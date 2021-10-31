@@ -43,7 +43,7 @@ def get_words(filename: str,
     :rtype: List[str]
     """
     with open(filename) as file:
-        all_words = [line.rstrip() for line in file.readlines()]
+        all_words = [line.rstrip().lower() for line in file.readlines()]
 
     return get_words_list(letters, all_words)
 
@@ -101,12 +101,18 @@ def get_pure_user_words(user_words: List[str],
     """
 
     output_words = []
-    words_in_string = get_words_list(letters, words_from_dict)
     for user_word in user_words:
-        if ((len(user_word) >= 4) and
-                (letters[4] in user_word) and
-                (user_word not in words_in_string)):
-            output_words.append(user_word)
+        user_word_l = user_word.lower()
+        if ((len(user_word_l) >= 4) and
+                (letters[4] in user_word_l) and
+                (user_word_l not in words_from_dict)):
+
+            user_word_list = list(user_word_l)
+            for letter in letters:
+                if letter in user_word_l:
+                    user_word_list.remove(letter)
+            if not user_word_list:
+                output_words.append(user_word_l)
 
     return output_words
 
